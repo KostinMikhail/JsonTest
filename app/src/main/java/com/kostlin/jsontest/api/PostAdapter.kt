@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kostlin.jsontest.R
+import com.kostlin.jsontest.api.PostModelDetail
 import com.squareup.picasso.Picasso
 
 
@@ -20,6 +21,7 @@ class PostAdapter() :
 
     var onClick: (position: Int) -> Unit = {}
     var postList: MutableList<PostModel> = mutableListOf()
+    var postListDetail: MutableList<PostModelDetail> = mutableListOf()
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvID: TextView = itemView.findViewById(R.id.tvID)
@@ -44,7 +46,7 @@ class PostAdapter() :
         holder.tvID.text = listItem.id.toString()
         holder.tvName.text = listItem.name
         holder.container.setOnClickListener{
-            onClick.invoke(position)
+            onClick.invoke(listItem.id?:0)
         }
     }
 

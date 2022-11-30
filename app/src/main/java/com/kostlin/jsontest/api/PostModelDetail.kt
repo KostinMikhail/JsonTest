@@ -1,6 +1,6 @@
 package com.kostlin.jsontest.api
 
-class PostModelDetail(
+data class PostModelDetail(
     val id: Int? = null,
     val name: String? = null,
     val img: String? = null,

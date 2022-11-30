@@ -3,12 +3,13 @@ package com.example.jsontest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jsontest.api.PostAdapter
 import com.kostlin.jsontest.api.Common
 import com.example.jsontest.api.RetrofitServices
 import com.example.jsontest.api.PostModel
+import com.example.jsontest.ui.main.DetailFragment
+import com.kostlin.jsontest.R
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,31 +19,30 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     lateinit var mService: RetrofitServices
+
     var adapter = PostAdapter().apply {
         onClick = { position ->
-            Toast.makeText(baseContext, "Нажат номер :$position", Toast.LENGTH_SHORT).show()
 
             supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, DetailFragment.newInstance(position))
+                .addToBackStack("mainDetail")
+                .commit()
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.kostlin.jsontest.R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
         mService = Common.retrofitService
         myRecyclerView.layoutManager = LinearLayoutManager(this)
-        getAllCompaines()
-
-
+        getAllCompanies()
     }
 
-    private fun getAllCompaines() {
+    private fun getAllCompanies() {
 
         mService.getPosts().enqueue(object : Callback<MutableList<PostModel>> {
             override fun onFailure(call: Call<MutableList<PostModel>>, t: Throwable) {
-
             }
 
             override fun onResponse(
@@ -54,8 +54,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 adapter.notifyDataSetChanged()
                 myRecyclerView.adapter = adapter
-
-
             }
         })
 
