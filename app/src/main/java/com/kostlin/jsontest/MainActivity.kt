@@ -1,4 +1,4 @@
-package com.example.jsontest
+package com.kostlin.jsontest
 
 
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +9,6 @@ import com.kostlin.jsontest.api.Common
 import com.example.jsontest.api.RetrofitServices
 import com.example.jsontest.api.PostModel
 import com.example.jsontest.ui.main.DetailFragment
-import com.kostlin.jsontest.R
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback

@@ -6,7 +6,7 @@ data class PostModelDetail(
     val img: String? = null,
     val description: String? = null,
     val lat: Double? = null,
-    val lot: Double? = null,
+    val lon: Double? = null,
     val www: String? = null,
     val phone: String? = null
     ) {

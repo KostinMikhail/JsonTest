@@ -7,13 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.example.jsontest.api.RetrofitServices
 import com.kostlin.jsontest.R
 import com.kostlin.jsontest.api.Common
 import com.kostlin.jsontest.api.PostModelDetail
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.post_model_layout.*
 import retrofit2.Call
 import retrofit2.Response
@@ -31,10 +29,7 @@ class DetailFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
-
     }
-
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,12 +43,27 @@ class DetailFragment : Fragment() {
 
         mService = Common.retrofitService
         getDetails()
-        tvId.text = arguments?.getInt("position").toString()
-        //tvName.text = arguments?.getString("name").toString()
-
-
     }
 
+    fun place(postModelDetail: MutableList<PostModelDetail>): String {
+        val allDetails = mutableListOf(postModelDetail)
+        val modelPostModelDetail =
+            allDetails.elementAt(0)
+
+        val name: String = modelPostModelDetail.firstOrNull()?.name.toString()
+        tvId.text = modelPostModelDetail.firstOrNull()?.id.toString()
+        tvName.text = modelPostModelDetail.firstOrNull()?.name.toString()
+        tvDescription.text = modelPostModelDetail.firstOrNull()?.description.toString()
+        tvLat.text = modelPostModelDetail.firstOrNull()?.lat.toString()
+        tvLon.text = modelPostModelDetail.firstOrNull()?.lon.toString()
+        tvWww.text = modelPostModelDetail.firstOrNull()?.www.toString()
+        tvPhone.text = modelPostModelDetail.firstOrNull()?.phone.toString()
+        Glide.with(ivImg.context)
+            .load("https://lifehack.studio/test_task/${modelPostModelDetail.firstOrNull()?.img}")
+            .placeholder(R.drawable.ic_launcher_background)
+            .into(ivImg)
+        return name
+    }
 
     private fun getDetails() {
 
@@ -63,26 +73,14 @@ class DetailFragment : Fragment() {
                 call: Call<MutableList<PostModelDetail>>,
                 response: Response<MutableList<PostModelDetail>>
             ) {
-                println(response.code())
                 response.body()?.let {
-                    tvId.text = it.id.toString()
-                    tvName.text = it.
-
-
+                    place(it)
                 }
-
             }
 
             override fun onFailure(call: Call<MutableList<PostModelDetail>>, t: Throwable) {
-                Log.e("DetailFragmentONFailure", "error")
+                Log.e("DetailFragmentOnFailure", "error")
             }
         })
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-    }
-
 }
